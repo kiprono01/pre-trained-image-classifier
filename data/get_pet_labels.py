@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/get_pet_labels.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                  
+# PROGRAMMER: KIPRONO BENSON
+# DATE CREATED: 22/08/2026                              
 # REVISED DATE: 
 # PURPOSE: Create the function get_pet_labels that creates the pet labels from 
 #          the image's filename. This function inputs: 
@@ -40,6 +40,40 @@ def get_pet_labels(image_dir):
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
-    # Replace None with the results_dic dictionary that you created with this
-    # function
-    return None
+    # Retrieve the filenames from folder pet_images
+    filename_list = listdir(image_dir)
+
+    results_dic = dict()
+
+    for filename in filename_list:
+        if filename not in results_dic:
+            #set pet_image variable to a file name
+            pet_image = filename
+        
+            #sets string to lower case letters
+            low_pet_image = pet_image.lower()
+        
+            #splits lower case string by _ to break into words
+            word_list_pet_image = low_pet_image.split("_")
+        
+            #create pet_name starting as empty string
+            pet_name = ""
+        
+            #loops to check if word in pet name is only alphabetic
+            #characters - if true append word to pet_name seperated                 #by trailing space
+            for word in word_list_pet_image:
+                if word.isalpha():
+                    pet_name += word + " "
+                
+            #strip off starting/trailing whitespace characters
+            pet_name = pet_name.strip()
+        
+            results_dic[filename] = [pet_name]
+        else:
+            print("** Warning: Key=", filename,
+              "already exists in results_dic with value =",
+              results_dic[filename])
+       
+            # Replace None with the results_dic dictionary that 
+            #you created with thisfunction
+    return results_dic
