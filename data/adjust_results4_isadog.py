@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/adjust_results4_isadog.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                 
+# PROGRAMMER: KIPRONO BENSON
+# DATE CREATED: 22/08/2026                              
 # REVISED DATE: 
 # PURPOSE: Create a function adjust_results4_isadog that adjusts the results 
 #          dictionary to indicate whether or not the pet image label is of-a-dog, 
@@ -37,6 +37,8 @@
 #       results_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
+from get_pet_labels import get_pet_labels
+
 def adjust_results4_isadog(results_dic, dogfile):
     """
     Adjusts the results dictionary to determine if classifier correctly 
@@ -66,5 +68,34 @@ def adjust_results4_isadog(results_dic, dogfile):
                maltese) (string - indicates text file's filename)
     Returns:
            None - results_dic is mutable data type so no return needed.
-    """           
-    None
+    """    
+    
+    dognames_dict = dict()
+    
+    with open(dogfile, "r") as f:
+        line = f.readline()
+        
+        while line != "":
+            line = line.lower().rstrip('\n')
+            
+            if line not in dognames_dict:
+                dognames_dict[line] = 1
+            else:
+                print("** Warning: Key=", line,
+                      "already exists in results_dic with value =",
+                      dognames_dict[line])
+                      
+            line = f.readline()    
+                      
+        for filename, values in results_dic.items():
+            if values[0] in dognames_dict and values[1] in dognames_dict:
+              values.extend((1, 1))
+            elif values[0] in dognames_dict and values[1] not in dognames_dict:
+              values.extend((1, 0))
+            elif values[0] not in dognames_dict and values[1] in dognames_dict:
+              values.extend((0, 1))
+            else:
+              values.extend((0, 0))
+                                      
+
+  
